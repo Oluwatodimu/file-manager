@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: dropbox-clone
+
+  jackson:
+    default-property-inclusion: non_null
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/dropbox_backend?createDatabaseIfNotExist=true
+    username: root
+    password: Zawarudo12!@
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+      connection-test-query: SELECT 1
+
+jwt:
+  key: XLhY4sfQceYsNabu8Ufazsez6gBD5QsG
