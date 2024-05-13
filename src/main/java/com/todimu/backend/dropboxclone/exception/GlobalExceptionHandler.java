@@ -34,10 +34,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({BadCredentialsException.class, EmailAlreadyExistsException.class})
+    @ExceptionHandler({BadCredentialsException.class, EmailAlreadyExistsException.class, FolderAlreadyExistsException.class})
     public ResponseEntity<BaseResponse> badRequestExceptions(Exception exception) {
         log.error(exception.getMessage(), exception.getLocalizedMessage());
         return new ResponseEntity<>(new BaseResponse(null, exception.getMessage(), true), HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({NotFoundException.class})
+    public ResponseEntity<BaseResponse> notFoundExceptions(Exception exception) {
+        log.error(exception.getMessage(), exception.getLocalizedMessage());
+        return new ResponseEntity<>(new BaseResponse(null, exception.getMessage(), true), HttpStatus.NOT_FOUND);
     }
 
     @Override
@@ -56,7 +63,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class, RuntimeException.class})
     public ResponseEntity<BaseResponse> handleAllExceptions(Exception ex) {
-        ex.printStackTrace();
+        log.error(ex.getMessage());
         log.error(ex.getMessage(), ex.getLocalizedMessage());
         return new ResponseEntity<>(new BaseResponse(null, (ex.getMessage() != null) ? ex.getMessage() : "Oops something went wrong !!!", true), HttpStatus.INTERNAL_SERVER_ERROR);
 

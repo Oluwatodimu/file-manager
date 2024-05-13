@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
                         .requestMatchers( URL_TRAILER + "/auth/**").permitAll()
                         .requestMatchers(URL_TRAILER + "/test/nice").authenticated()
+                        .requestMatchers(URL_TRAILER + "/folders/**").authenticated()
                 );
 
         return httpSecurity.build();
