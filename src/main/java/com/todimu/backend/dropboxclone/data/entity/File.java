@@ -24,6 +24,8 @@ public class File implements Serializable {
 
     private String path;
 
+    private String extension;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "folder_id")
     private Folder folder;

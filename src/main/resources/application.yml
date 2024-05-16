@@ -24,3 +24,10 @@ spring:
 
 jwt:
   key: XLhY4sfQceYsNabu8Ufazsez6gBD5QsG
+
+do:
+  space:
+    access-key: DO00HGCADBTBPJEYMLFX
+    access-secret: qpjJKGzVFL/6MZ15I62d43ti651srs3O4/yqNC85iPc
+    url: https://dropbox-clone.fra1.digitaloceanspaces.com
+    region: eu-central-1
