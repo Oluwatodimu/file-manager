@@ -34,7 +34,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({BadCredentialsException.class, EmailAlreadyExistsException.class, FolderAlreadyExistsException.class})
+    @ExceptionHandler({BadCredentialsException.class, EmailAlreadyExistsException.class, FolderAlreadyExistsException.class, FileAlreadyExistsException.class})
     public ResponseEntity<BaseResponse> badRequestExceptions(Exception exception) {
         log.error(exception.getMessage(), exception.getLocalizedMessage());
         return new ResponseEntity<>(new BaseResponse(null, exception.getMessage(), true), HttpStatus.BAD_REQUEST);

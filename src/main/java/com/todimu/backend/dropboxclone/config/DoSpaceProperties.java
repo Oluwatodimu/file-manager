@@ -8,4 +8,5 @@ public class DoSpaceProperties {
     private String accessSecret;
     private String url;
     private String region;
+    private String bucketName;
 }

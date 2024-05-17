@@ -27,7 +27,8 @@ jwt:
 
 do:
   space:
-    access-key: DO00HGCADBTBPJEYMLFX
-    access-secret: qpjJKGzVFL/6MZ15I62d43ti651srs3O4/yqNC85iPc
-    url: https://dropbox-clone.fra1.digitaloceanspaces.com
-    region: eu-central-1
+    access-key: DO00UTKMYBNNKYV69YXH
+    access-secret: 7EOTDq7EVzLC7USO9DL+QYFSbZlrGZSoc1K8Hh1DH9c
+    url: https://fra1.digitaloceanspaces.com
+    region: fra1
+    bucket-name: new-test-store

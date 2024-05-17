@@ -1,6 +1,8 @@
 package com.todimu.backend.dropboxclone.controller;
 
 import com.todimu.backend.dropboxclone.data.dto.request.CreateFolderRequest;
+import com.todimu.backend.dropboxclone.data.dto.request.MoveFolderRequest;
+import com.todimu.backend.dropboxclone.data.dto.request.RenameFolderRequest;
 import com.todimu.backend.dropboxclone.data.dto.response.BaseResponse;
 import com.todimu.backend.dropboxclone.data.dto.response.FolderStructureResponse;
 import com.todimu.backend.dropboxclone.data.entity.Folder;
@@ -38,5 +40,19 @@ public class FolderController {
         log.info("creating folder for user: {}, with name: {}", authentication.getName(), request.getName());
         Folder newFolder = folderService.createFolder(request, Long.valueOf(authentication.getName()));
         return new ResponseEntity<>(new BaseResponse(newFolder, SUCCESS_MESSAGE, false), HttpStatus.CREATED);
+    }
+
+    @PatchMapping(path = "/rename")
+    public ResponseEntity<BaseResponse> renameFolder(@Valid @RequestBody RenameFolderRequest request) {
+        log.info("renaming folder: {} to: {}", request.getFolderId(), request.getNewFolderName());
+        Folder renamedFolder = folderService.changeFolderName(request);
+        return new ResponseEntity<>(new BaseResponse(renamedFolder, SUCCESS_MESSAGE, false), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/move")
+    public ResponseEntity<BaseResponse> moveFolder(@Valid @RequestBody MoveFolderRequest request) {
+        log.info("moving folder: {} to folder: {}", request.getFolderId(), request.getDestinationFolderId());
+        Folder movedFolder = folderService.moveFolder(request);
+        return new ResponseEntity<>(new BaseResponse(movedFolder, SUCCESS_MESSAGE, false), HttpStatus.OK);
     }
 }

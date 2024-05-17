@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers( URL_TRAILER + "/auth/**").permitAll()
                         .requestMatchers(URL_TRAILER + "/test/nice").authenticated()
                         .requestMatchers(URL_TRAILER + "/folders/**").authenticated()
+                        .requestMatchers(URL_TRAILER + "/files/**").authenticated()
                 );
 
         return httpSecurity.build();

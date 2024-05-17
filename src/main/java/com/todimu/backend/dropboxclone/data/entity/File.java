@@ -1,5 +1,6 @@
 package com.todimu.backend.dropboxclone.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,10 +27,12 @@ public class File implements Serializable {
 
     private String extension;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "folder_id")
     private Folder folder;
 
+    @JsonIgnore
     @Column(name = "user_id", updatable = false)
     private Long userId;
 }

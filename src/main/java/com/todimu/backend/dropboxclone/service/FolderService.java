@@ -1,6 +1,8 @@
 package com.todimu.backend.dropboxclone.service;
 
 import com.todimu.backend.dropboxclone.data.dto.request.CreateFolderRequest;
+import com.todimu.backend.dropboxclone.data.dto.request.MoveFolderRequest;
+import com.todimu.backend.dropboxclone.data.dto.request.RenameFolderRequest;
 import com.todimu.backend.dropboxclone.data.dto.response.FolderStructureResponse;
 import com.todimu.backend.dropboxclone.data.entity.File;
 import com.todimu.backend.dropboxclone.data.entity.Folder;
@@ -62,5 +64,24 @@ public class FolderService {
 
         Folder folder = folderRepository.findById(request.getParentFolderId()).orElseThrow(() -> new NotFoundException("folder not found"));
         return !folderRepository.existsByParentFolderAndName(folder, request.getName());
+    }
+
+    public Folder changeFolderName(RenameFolderRequest request) {
+        Folder folderToBeRenamed = folderRepository.findById(request.getFolderId()).orElseThrow(() -> new NotFoundException("folder not found"));
+        folderToBeRenamed.setName(request.getNewFolderName());
+        return folderRepository.save(folderToBeRenamed);
+    }
+
+    public Folder moveFolder(MoveFolderRequest request) {
+        Folder folderToBeMoved = folderRepository.findById(request.getFolderId()).orElseThrow(() -> new NotFoundException("folder not found"));
+
+        if (request.getDestinationFolderId() == null) { // saved to root directory
+            folderToBeMoved.setParentFolder(null);
+            return folderRepository.save(folderToBeMoved);
+        }
+
+        Folder destinationFolder = folderRepository.findById(request.getDestinationFolderId()).orElseThrow(() -> new NotFoundException("destination folder not found"));
+        folderToBeMoved.setParentFolder(destinationFolder);
+        return folderRepository.save(folderToBeMoved);
     }
 }
