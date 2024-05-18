@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.todimu.backend.dropboxclone.config.DoSpaceProperties;
 import com.todimu.backend.dropboxclone.data.entity.File;
 import com.todimu.backend.dropboxclone.data.entity.Folder;
@@ -11,6 +12,7 @@ import com.todimu.backend.dropboxclone.exception.FileAlreadyExistsException;
 import com.todimu.backend.dropboxclone.exception.NotFoundException;
 import com.todimu.backend.dropboxclone.repository.FileRepository;
 import com.todimu.backend.dropboxclone.repository.FolderRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -21,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -112,5 +116,25 @@ public class FileService {
         }
 
         return !fileRepository.existsByNameAndExtensionAndFolder(fileName, extension, folder);
+    }
+
+    public void downloadFile(Long fileId, HttpServletResponse response) {
+        File file = fileRepository.findById(fileId).orElseThrow(() -> new NotFoundException("file not found"));
+        S3Object s3Object = amazonS3.getObject(doSpaceProperties.getBucketName(), file.getName() + file.getExtension());
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + file.getExtension() + "\"");
+
+        try (InputStream inputStream = s3Object.getObjectContent();
+             OutputStream outputStream = response.getOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            outputStream.flush();
+        } catch (IOException e) {
+            throw new RuntimeException("Error while downloading the file", e);
+        }
     }
 }

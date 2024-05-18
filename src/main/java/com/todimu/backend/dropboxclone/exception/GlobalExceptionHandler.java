@@ -27,7 +27,7 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler({UsernameNotFoundException.class, TokenValidationFailedException.class, AuthenticationException.class})
+    @ExceptionHandler({UsernameNotFoundException.class, TokenValidationFailedException.class, AuthenticationException.class, ActionNotAllowedException.class})
     public ResponseEntity<BaseResponse> unauthorizedExceptions(Exception exception) {
         log.error(exception.getMessage(), exception.getLocalizedMessage());
         return new ResponseEntity<>(new BaseResponse(null, exception.getMessage(), true), HttpStatus.UNAUTHORIZED);
