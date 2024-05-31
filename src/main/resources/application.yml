@@ -11,7 +11,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/dropbox_backend?createDatabaseIfNotExist=true
     username: root
-    password: Zawarudo12!@
+    password:
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -27,8 +27,8 @@ jwt:
 
 do:
   space:
-    access-key: DO00UTKMYBNNKYV69YXH
-    access-secret: 7EOTDq7EVzLC7USO9DL+QYFSbZlrGZSoc1K8Hh1DH9c
-    url: https://fra1.digitaloceanspaces.com
+    access-key:
+    access-secret:
+    url:
     region: fra1
     bucket-name: new-test-store
